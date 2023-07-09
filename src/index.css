@@ -347,12 +347,101 @@ p {
   padding-top: 10px;
   cursor: pointer;
   justify-content: flex-end;
+  transition: color 0.35s ease-in-out;
 }
 .auth-form .forgot-password .arrow-right {
   margin-left: 2px;
   margin-top: 2px;
 }
 .auth-form .forgot-password:hover {
+  color: var(--primary-1);
+}
+
+.forgot-password-tabs {
+  height: 290px;
+}
+.forgot-password-tabs .tabs-auth .tab-group .tab .forgot-password {
+  width: 100%;
+}
+
+.forgot-password-form .form-input-container {
+  margin-bottom: 20px;
+}
+.forgot-password-form .auth-button {
+  color: var(--white-1);
+  background-color: var(--primary-1);
+  border-color: var(--primary-1);
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 700;
+}
+.forgot-password-form .auth-button:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.5;
+  background-color: var(--primary-1);
+  border-color: var(--primary-1);
+}
+.forgot-password-form a {
+  color: inherit;
+  text-decoration: none;
+}
+.forgot-password-form .login {
+  display: flex;
+  padding-top: 10px;
+  cursor: pointer;
+  justify-content: flex-end;
+}
+.forgot-password-form .login .arrow-left {
+  margin-right: 2px;
+  margin-top: 2px;
+}
+.forgot-password-form .login:hover {
+  color: var(--primary-1);
+}
+
+.reset-password-tabs {
+  height: 370px;
+}
+.reset-password-tabs .tabs-auth .tab-group .tab .reset-password {
+  width: 100%;
+}
+
+.reset-password-form .form-input-container {
+  margin-bottom: 20px;
+}
+.reset-password-form .auth-button {
+  color: var(--white-1);
+  background-color: var(--primary-1);
+  border-color: var(--primary-1);
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 700;
+}
+.reset-password-form .auth-button:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.5;
+  background-color: var(--primary-1);
+  border-color: var(--primary-1);
+}
+.reset-password-form a {
+  color: inherit;
+  text-decoration: none;
+}
+.reset-password-form .login {
+  display: flex;
+  padding-top: 10px;
+  cursor: pointer;
+  justify-content: flex-end;
+}
+.reset-password-form .login .arrow-left {
+  margin-right: 2px;
+  margin-top: 2px;
+}
+.reset-password-form .login:hover {
   color: var(--primary-1);
 }
 
