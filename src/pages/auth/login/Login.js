@@ -1,10 +1,11 @@
 import { FaArrowRight, FaUser, FaLock } from 'react-icons/fa';
 import { Input } from '@components/input/Input';
 import { Button } from '@components/button/Button';
-import { Link } from 'react-router-dom';
-import {useEffect, useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { authService } from '@services/api/auth.service';
 import { CircularProgress } from '@mui/material';
+import { useLocalStorage } from "@hooks/useLocalStorage";
 
 export const Login = () => {
 	const [ username, setUsername ] = useState('');
@@ -16,6 +17,10 @@ export const Login = () => {
 	const [ error, setError ] = useState(false);
 	const [ user, setUser ] = useState();
 
+	const navigate = useNavigate();
+	const [ setStoredUsername ] = useLocalStorage('username', 'set');
+	const [ setLoggedIn ] = useLocalStorage('keepLoggedIn', 'set');
+
 	const login = async (event) => {
 		setLoading(true);
 		event.preventDefault();
@@ -26,7 +31,10 @@ export const Login = () => {
 				password: password
 			});
 
-			console.log(result);
+			// console.log(result);
+
+			setStoredUsername(username);
+			setLoggedIn(keepLoggedIn);
 
 			setUser(result.data.user);
 			setError(false);
@@ -46,10 +54,10 @@ export const Login = () => {
 		if (loading && !user)
 			return;
 		if (user) {
-			console.log('navigate user');
+			navigate('/app/social/streams');
 			setLoading(false);
 		}
-	}, [loading, user]);
+	}, [loading, user, navigate]);
 
 	return (
 		<div className="auth-inner">

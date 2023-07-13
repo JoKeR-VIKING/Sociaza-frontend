@@ -1,10 +1,12 @@
 import { FaEnvelope, FaUser, FaLock } from 'react-icons/fa';
 import { Input } from '@components/input/Input';
 import { Button } from '@components/button/Button';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { UtilsService } from '@services/utils/utils.service';
 import { authService } from '@services/api/auth.service';
+import { useLocalStorage } from '@hooks/useLocalStorage';
 
 export const Signup = () => {
 	const [ email, setEmail ] = useState('');
@@ -16,6 +18,10 @@ export const Signup = () => {
 	const [ alertType, setAlertType ] = useState();
 	const [ error, setError ] = useState(false);
 	const [ user, setUser ] = useState();
+
+	const navigate = useNavigate();
+	const [ setStoredUsername ] = useLocalStorage('username', 'set');
+	const [ setLoggedIn ] = useLocalStorage('keepLoggedIn', 'set');
 
 	const registerUser = async (event) => {
 		setLoading(true);
@@ -36,6 +42,9 @@ export const Signup = () => {
 
 			// console.log(result);
 
+			setStoredUsername(username);
+			setLoggedIn(true);
+
 			setUser(result.data.user);
 			setError(false);
 			setAlertType('alert-success');
@@ -55,10 +64,10 @@ export const Signup = () => {
 		if (loading && !user)
 			return;
 		if (user) {
-			console.log('navigate user');
+			navigate('/app/social/streams');
 			setLoading(false);
 		}
-	}, [loading, user]);
+	}, [loading, user, navigate]);
 
 	return (
 		<div className="auth-inner">
