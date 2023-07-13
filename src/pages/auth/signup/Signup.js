@@ -1,10 +1,10 @@
 import { FaEnvelope, FaUser, FaLock } from 'react-icons/fa';
-import { Input } from '../../../components/input/Input';
-import { Button } from '../../../components/button/Button';
+import { Input } from '@components/input/Input';
+import { Button } from '@components/button/Button';
 import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
-import { UtilsService } from '../../../services/utils/utils.service';
-import { authService } from '../../../services/api/auth.service';
+import { UtilsService } from '@services/utils/utils.service';
+import { authService } from '@services/api/auth.service';
 
 export const Signup = () => {
 	const [ email, setEmail ] = useState('');

@@ -1,11 +1,11 @@
 import { FaArrowLeft, FaLock } from 'react-icons/fa';
-import { Input } from '../../../components/input/Input';
-import { Button } from '../../../components/button/Button';
+import { Input } from '@components/input/Input';
+import { Button } from '@components/button/Button';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import backgroundImage from '../../../assests/images/background.jpg';
+import backgroundImage from '@assets/images/background.jpg';
 import { useState } from 'react';
 import { CircularProgress } from '@mui/material';
-import { authService } from '../../../services/api/auth.service';
+import { authService } from '@services/api/auth.service';
 
 export const ResetPassword = () => {
 	const [ password, setPassword ] = useState('');
