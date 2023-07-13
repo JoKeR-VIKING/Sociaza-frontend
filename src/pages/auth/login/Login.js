@@ -1,9 +1,9 @@
 import { FaArrowRight, FaUser, FaLock } from 'react-icons/fa';
-import { Input } from '../../../components/input/Input';
-import { Button } from '../../../components/button/Button';
+import { Input } from '@components/input/Input';
+import { Button } from '@components/button/Button';
 import { Link } from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import { authService } from '../../../services/api/auth.service';
+import { authService } from '@services/api/auth.service';
 import { CircularProgress } from '@mui/material';
 
 export const Login = () => {

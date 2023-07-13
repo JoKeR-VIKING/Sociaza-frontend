@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import backgroundImage from "../../../assests/images/background.jpg";
-import { Login } from '../login/Login';
-import { Signup } from '../signup/Signup';
+import backgroundImage from "@assets/images/background.jpg";
+import { Login } from '@pages/auth';
+import { Signup } from '@pages/auth';
 
 export const AuthTab = () => {
 	const [type, setType] = useState('signin');
