@@ -7,6 +7,8 @@ import { CircularProgress } from '@mui/material';
 import { UtilsService } from '@services/utils/utils.service';
 import { authService } from '@services/api/auth.service';
 import { useLocalStorage } from '@hooks/useLocalStorage';
+import { useSessionStorage } from '@hooks/useSessionStorage';
+import { useDispatch } from 'react-redux';
 
 export const Signup = () => {
 	const [ email, setEmail ] = useState('');
@@ -20,8 +22,10 @@ export const Signup = () => {
 	const [ user, setUser ] = useState();
 
 	const navigate = useNavigate();
-	const [ setStoredUsername ] = useLocalStorage('username', 'set');
-	const [ setLoggedIn ] = useLocalStorage('keepLoggedIn', 'set');
+	const setStoredUsername = useLocalStorage('username', 'set');
+	const setLoggedIn = useLocalStorage('keepLoggedIn', 'set');
+	const pageReload = useSessionStorage('pageReload', 'set');
+	const dispatch = useDispatch();
 
 	const registerUser = async (event) => {
 		setLoading(true);
@@ -45,10 +49,11 @@ export const Signup = () => {
 			setStoredUsername(username);
 			setLoggedIn(true);
 
-			setUser(result.data.user);
+			// setUser(result.data.user);
 			setError(false);
 			setAlertType('alert-success');
 			setMessage(result?.data?.message);
+			UtilsService.dispatchUser(result, pageReload, dispatch, setUser);
 			setLoading(false);
 		}
 		catch (err) {

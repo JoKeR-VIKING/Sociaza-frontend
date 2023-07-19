@@ -4,6 +4,8 @@
 	padding: 0;
 	box-sizing: border-box;
 	outline: none;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+	user-select: none;
 }
 
 *,

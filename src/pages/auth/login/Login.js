@@ -3,9 +3,12 @@ import { Input } from '@components/input/Input';
 import { Button } from '@components/button/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { authService } from '@services/api/auth.service';
 import { CircularProgress } from '@mui/material';
-import { useLocalStorage } from "@hooks/useLocalStorage";
+import { useLocalStorage } from '@hooks/useLocalStorage';
+import { UtilsService } from '@services/utils/utils.service';
+import { useSessionStorage } from '@hooks/useSessionStorage';
 
 export const Login = () => {
 	const [ username, setUsername ] = useState('');
@@ -18,8 +21,10 @@ export const Login = () => {
 	const [ user, setUser ] = useState();
 
 	const navigate = useNavigate();
-	const [ setStoredUsername ] = useLocalStorage('username', 'set');
-	const [ setLoggedIn ] = useLocalStorage('keepLoggedIn', 'set');
+	const setStoredUsername = useLocalStorage('username', 'set');
+	const setLoggedIn = useLocalStorage('keepLoggedIn', 'set');
+	const pageReload = useSessionStorage('pageReload', 'set');
+	const dispatch = useDispatch();
 
 	const login = async (event) => {
 		setLoading(true);
@@ -36,10 +41,11 @@ export const Login = () => {
 			setStoredUsername(username);
 			setLoggedIn(keepLoggedIn);
 
-			setUser(result.data.user);
+			// setUser(result.data.user);
 			setError(false);
 			setAlertType('alert-success');
 			setMessage(result?.data?.message);
+			UtilsService.dispatchUser(result, pageReload, dispatch, setUser);
 			setLoading(false);
 		}
 		catch (err) {

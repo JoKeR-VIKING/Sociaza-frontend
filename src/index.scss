@@ -7,7 +7,17 @@
 @import "App";
 
 @import "./components/input/Input";
+@import "./components/header/Header";
+@import "./components/avatar/Avatar";
+@import "./components/sidebar/Sidebar";
+@import "./components/suggesstions/Suggestions";
+@import "./components/message-sidebar/MessageSidebar";
+@import "./components/dropdown/Dropdown";
+
 @import "./pages/auth/auth-tabs/AuthTab";
 @import "./pages/auth/login/Login";
 @import "./pages/auth/forgot-password/ForgotPassword";
 @import "./pages/auth/reset-password/ResetPassword";
+@import "./pages/social/Social";
+@import "./pages/social/streams/Streams";
+@import "./pages/error/Error";
