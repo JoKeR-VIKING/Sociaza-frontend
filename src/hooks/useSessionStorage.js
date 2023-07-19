@@ -10,7 +10,9 @@ export const useSessionStorage = (key, type) => {
 			};
 		}
 		else {
-			window.sessionStorage.removeItem(key);
+			return (key) => {
+				window.sessionStorage.removeItem(key);
+			}
 		}
 	}
 	catch (err) {

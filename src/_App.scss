@@ -9,3 +9,10 @@
 	border-bottom-right-radius: 15px;
 	transition: all 0.3s;
 }
+
+::-webkit-scrollbar
+{
+	width: 5px;
+	height: 5px;
+	display: none;
+}
