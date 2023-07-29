@@ -13,6 +13,8 @@
 @import "./components/suggesstions/Suggestions";
 @import "./components/message-sidebar/MessageSidebar";
 @import "./components/dropdown/Dropdown";
+@import "./components/toast/Toast";
+@import "./components/dialog/NotificationPreview";
 
 @import "./pages/auth/auth-tabs/AuthTab";
 @import "./pages/auth/login/Login";
@@ -20,4 +22,5 @@
 @import "./pages/auth/reset-password/ResetPassword";
 @import "./pages/social/Social";
 @import "./pages/social/streams/Streams";
+@import "./pages/social/notifications/Notifications";
 @import "./pages/error/Error";
