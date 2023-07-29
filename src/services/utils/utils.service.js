@@ -1,4 +1,5 @@
 import { addUser, clearUser } from '@redux/reducers/user/user.reducer';
+import { addToNotifications, clearNotifications } from '@redux/reducers/notification/notification.reducer';
 
 export class UtilsService {
 	static avatarColor() {
@@ -35,9 +36,18 @@ export class UtilsService {
 
 	static clearStore({ dispatch, deleteStorageUsername, deleteSessionPageReload, setLoggedIn }) {
 		dispatch(clearUser());
+		dispatch(clearNotifications());
 		deleteStorageUsername();
 		deleteSessionPageReload();
 		setLoggedIn(false);
+	}
+
+	static dispatchNotification(message, type, dispatch) {
+		dispatch(addToNotifications({ message, type }));
+	}
+
+	static dispatchClearNotification(dispatch) {
+		dispatch(clearNotifications());
 	}
 
 	static appEnvironment() {
@@ -78,5 +88,14 @@ export class UtilsService {
 		setSettings(items);
 
 		return items;
+	}
+
+	static appImageUrl(version, id) {
+		if (typeof version === 'string' && typeof id === 'string') {
+			version = version.replace(/['"]+/g, '');
+			id = id.replace(/['"]+/g, '');
+		}
+
+		return `https://res.cloudinary.com/dslkigtvk/image/upload/v${version}/${id}`;
 	}
 }
