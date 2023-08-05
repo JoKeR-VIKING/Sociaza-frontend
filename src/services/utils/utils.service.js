@@ -1,5 +1,7 @@
 import { addUser, clearUser } from '@redux/reducers/user/user.reducer';
 import { addToNotifications, clearNotifications } from '@redux/reducers/notification/notification.reducer';
+import { some } from 'lodash';
+import millify from 'millify';
 
 export class UtilsService {
 	static avatarColor() {
@@ -97,5 +99,44 @@ export class UtilsService {
 		}
 
 		return `https://res.cloudinary.com/dslkigtvk/image/upload/v${version}/${id}`;
+	}
+
+	static checkIfUserIsBlocked(blockedList, userId) {
+		return some(blockedList, (id) => id === userId);
+	}
+
+	static checkIfUserIsFollowed(userFollowers, postCreatorId, userId) {
+		return some(userFollowers, (user) => user._id === userId || postCreatorId === userId);
+	}
+
+	static firstLetterUppercase(word) {
+		if (word === "")
+			return "";
+
+		return word.charAt(0).toUpperCase() + word.slice(1);
+	}
+
+	static formattedReactions(reactions) {
+		const postReactions = [];
+
+		for (const [key, value] of Object.entries(reactions)) {
+			if (value > 0) {
+				const reactionObj = {
+					type: key,
+					value: value
+				}
+
+				postReactions.push(reactionObj);
+			}
+		}
+
+		return postReactions;
+	}
+
+	static shortenLargeNumbers(data) {
+		if (data === undefined)
+			return 0;
+
+		return millify(data);
 	}
 }
