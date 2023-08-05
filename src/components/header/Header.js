@@ -17,7 +17,7 @@ import { HeaderSkeleton } from '@components/header/HeaderSkeleton';
 import { notificationService } from '@services/api/notification.service';
 import { NotificationsUtilsService } from '@services/utils/notifications.utils.service';
 import { NotificationPreview } from '@components/dialog/NotificationPreview';
-import {socketService} from "@services/socket/socket.service";
+import { socketService } from '@services/socket/socket.service';
 
 export const Header = () => {
 	const { profile } = useSelector((state) => state.user);

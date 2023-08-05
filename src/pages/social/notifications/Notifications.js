@@ -114,7 +114,7 @@ export const Notifications = () => {
 
 												<div className="subtitle-body">
 													<small className="subtitle">
-														{notification?.read ? <FaCircle className="icon" /> : <FaRegCircle className="icon" />}
+														{notification?.read ? <FaRegCircle className="icon" /> : <FaCircle className="icon" />}
 													</small>
 													<p className="subtext">1 hr ago</p>
 												</div>

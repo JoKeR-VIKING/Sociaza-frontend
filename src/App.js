@@ -6,7 +6,7 @@ import { socketService } from '@services/socket/socket.service';
 import { useSelector } from 'react-redux';
 
 const App = () => {
-	const { notifications } = useSelector((state) => state);
+	const { notification } = useSelector((state) => state);
 
 	useEffect(() => {
 		socketService.setupSocketConnection();
@@ -14,8 +14,8 @@ const App = () => {
 
 	return (
 		<>
-			{ notifications && (
-				<Toast position={'top-right'} toastList={notifications} autoDelete={true} />
+			{ notification && (
+				<Toast position={'top-right'} toastList={notification} autoDelete={true} />
 			)}
 
 			<BrowserRouter>

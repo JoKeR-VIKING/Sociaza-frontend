@@ -8,6 +8,7 @@ import like from '@assets/reactions/like.png';
 import love from '@assets/reactions/love.png';
 import sad from '@assets/reactions/sad.png';
 import wow from '@assets/reactions/wow.png';
+import defaultReaction from '@assets/reactions/default.png';
 import {
 	FaBirthdayCake,
 	FaComments,
@@ -114,7 +115,7 @@ export const fontAwesomeIcons = {
 export const privacyList = [
 	{
 		topText: 'Public',
-		subText: 'Anyone on SocialApp',
+		subText: 'Anyone on Sociaza',
 		icon: <FaGlobe className="globe-icon globe"/>
 	},
 	{
@@ -198,7 +199,8 @@ export const reactionsMap = {
 	wow,
 	sad,
 	haha,
-	angry
+	angry,
+	defaultReaction
 };
 
 export const reactionsColor = {

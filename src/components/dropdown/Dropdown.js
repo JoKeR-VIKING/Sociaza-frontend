@@ -4,18 +4,7 @@ import PropTypes from 'prop-types';
 import { FaCircle, FaRegCircle, FaTrashAlt, FaUserAlt } from 'react-icons/fa';
 import { UtilsService } from '@services/utils/utils.service';
 
-export const Dropdown = ({
-					  data,
-					  notificationCount,
-					  title,
-					  style,
-					  height,
-					  onMarkAsRead,
-					  onDeleteNotification,
-					  onLogout,
-					  onNavigate
-				  }) =>
-{
+export const Dropdown = ({ data, notificationCount, title, style, height, onMarkAsRead, onDeleteNotification, onLogout, onNavigate }) => {
 	return (
 		<div className="social-dropdown" style={style} data-testid="dropdown">
 			<div className="social-card">
@@ -50,11 +39,9 @@ export const Dropdown = ({
 										className="content-body"
 										onClick={() =>
 										{
-											if (title === 'Notifications')
-											{
+											if (title === 'Notifications') {
 												onMarkAsRead(item);
-											} else
-											{
+											} else {
 												onNavigate();
 											}
 										}}
@@ -62,6 +49,7 @@ export const Dropdown = ({
 										<h6 className="title">{item?.topText}</h6>
 										<p className="subtext">{item?.subText}</p>
 									</div>
+
 									{title === 'Notifications' && (
 										<div className="content-icons">
 											<FaTrashAlt className="trash"

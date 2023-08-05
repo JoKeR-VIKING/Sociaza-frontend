@@ -51,11 +51,11 @@ export const Toast = (props) => {
 					>
 						<button className={"cancel-button"} onClick={() => deleteToast(index)}>X</button>
 
-						<div className={`toast-notification-image ${toast.description.length <= 73 ? 'toast-icon' : ''}`}>
+						<div className={`toast-notification-image ${toast?.description.length <= 73 ? 'toast-icon' : ''}`}>
 							<img src={toast.icon} alt="Icon"/>
 						</div>
 
-						<div className={`toast-notification-message ${toast.description.length <= 73 ? 'toast-message' : ''}`}>
+						<div className={`toast-notification-message ${toast?.description.length <= 73 ? 'toast-message' : ''}`}>
 							{toast.description}
 						</div>
 					</div>

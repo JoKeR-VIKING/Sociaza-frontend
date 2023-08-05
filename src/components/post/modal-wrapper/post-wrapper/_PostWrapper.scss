@@ -1,0 +1,22 @@
+.modal-wrapper
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	z-index: 999999;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-auto-rows: 1fr;
+	grid-template-areas: 'modal';
+}
+
+.modal-bg
+{
+	width: 100vw;
+	height: 100vh;
+	z-index: 0;
+	background: var(--white-11);
+	opacity: 0.6;
+
+}
