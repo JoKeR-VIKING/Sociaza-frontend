@@ -6,6 +6,7 @@ import { FaSearch } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePostItem } from '@redux/reducers/post/post.reducer';
 import { toggleGifModal } from '@redux/reducers/modal/modal.reducer';
+import {UtilsService} from "@services/utils/utils.service";
 
 export const Giphy = () => {
 	const { gifModalIsOpen } = useSelector((state) => state.modal);
@@ -44,8 +45,8 @@ export const Giphy = () => {
 
 					{ !loading && (
 						<ul className="giphy-container-picker-list">
-							{ gifs.map((gif, index) => (
-								<li className="giphy-container-picker-list-item" key={index} onClick={() => selectGif(gif?.images.original.url)}>
+							{ gifs.map((gif) => (
+								<li className="giphy-container-picker-list-item" key={UtilsService.generateString(10)} onClick={() => selectGif(gif?.images.original.url)}>
 									<img style={{ width: '470px' }} src={`${gif?.images.original.url}`} alt="" />
 								</li>
 							))}

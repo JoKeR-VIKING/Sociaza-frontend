@@ -42,21 +42,21 @@ export const Toast = (props) => {
 	return (
 		<>
 			<div className={`toast-notification-container ${position}`}>
-				{list?.map((toast, index) => (
+				{list?.map((toast) => (
 					<div
 						data-testid={"toast-notification"}
-						key={index}
+						key={UtilsService.generateString(10)}
 						className={`toast-notification toast ${position}`}
-						style={{ backgroundColor: toast.backgroundColor }}
+						style={{ backgroundColor: toast?.backgroundColor }}
 					>
 						<button className={"cancel-button"} onClick={() => deleteToast(index)}>X</button>
 
-						<div className={`toast-notification-image ${toast?.description.length <= 73 ? 'toast-icon' : ''}`}>
-							<img src={toast.icon} alt="Icon"/>
+						<div className={`toast-notification-image ${toast?.description?.length <= 73 ? 'toast-icon' : ''}`}>
+							<img src={toast?.icon} alt="Icon"/>
 						</div>
 
-						<div className={`toast-notification-message ${toast?.description.length <= 73 ? 'toast-message' : ''}`}>
-							{toast.description}
+						<div className={`toast-notification-message ${toast?.description?.length <= 73 ? 'toast-message' : ''}`}>
+							{toast?.description}
 						</div>
 					</div>
 				))}

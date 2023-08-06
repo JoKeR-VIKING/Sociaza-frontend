@@ -90,8 +90,8 @@ export const Notifications = () => {
 				{ notifications.length > 0 && (
 					<>
 						<div className="notifications-box">
-							{ notifications.map((notification, index) => (
-								<div className="notification-box" data-testid="notification-box" key={index} onClick={() => markNotificationAsRead(notification)}>
+							{ notifications.map((notification) => (
+								<div className="notification-box" data-testid="notification-box" key={UtilsService.generateString(10)} onClick={() => markNotificationAsRead(notification)}>
 									<div className="notification-box-sub-card">
 										<div className="notification-box-sub-card-media">
 											<div className="notification-box-sub-card-media-image-icon">

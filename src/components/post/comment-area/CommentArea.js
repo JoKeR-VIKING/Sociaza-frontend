@@ -148,7 +148,7 @@ export const CommentArea = ({ post }) => {
 		<>
 			<div className="comment-area">
 				<div className="like-icon reactions">
-					<div className="likes-block">
+					<div className="likes-block" onClick={() => addReactionToPost(selectedReaction ? selectedReaction.toLowerCase() : 'like')}>
 						<div className={`likes-block-icons reaction-icon ${selectedReaction.toLowerCase()}`}>
 							{ selectedReaction && (
 								<div className={`reaction-display ${selectedReaction.toLowerCase()}`}>
