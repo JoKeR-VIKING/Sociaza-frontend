@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Post } from '@components/post/post/Post';
-import {UtilsService} from "@services/utils/utils.service";
-import {PostUtilsService} from "@services/utils/post.utils.service";
-import {PostSkeleton} from "@components/post/post/PostSkeleton";
+import { UtilsService } from '@services/utils/utils.service';
+import { PostUtilsService } from '@services/utils/post.utils.service';
+import { PostSkeleton } from '@components/post/post/PostSkeleton';
 
 export const Posts = ({ allPosts, userFollowing, postsLoading }) => {
 	const { profile } = useSelector((state) => state.user);
@@ -21,12 +21,12 @@ export const Posts = ({ allPosts, userFollowing, postsLoading }) => {
 	return (
 		<>
 			<div className="posts-container">
-				{!loading && posts.map((post, index) => (
-					<div key={index}>
+				{!loading && posts.map((post) => (
+					<div key={post?.id}>
 						{ (!UtilsService.checkIfUserIsBlocked(profile?.blockedBy, post?.userId) || post?.userId === profile?._id) && (
 							<>
 								{ PostUtilsService.checkPrivacy(post, profile, following) && (
-									<Post post={post} showIcons={true} loading={loading} />
+									<Post post={post} showIcons={false} loading={loading} />
 								)}
 							</>
 						)}

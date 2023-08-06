@@ -16,7 +16,7 @@ export const Dialog = ({ title, firstButtonText, secondButtonText, firstButtonHa
 						/>
 
 						<Button
-							className='btn button cancel-btn'
+							className='btn button confirm-btn'
 							label={firstButtonText}
 							handleClick={firstButtonHandler}
 						/>

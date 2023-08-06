@@ -184,7 +184,7 @@ export class PostUtilsService {
 	static updateSinglePost(posts, post, setPosts) {
 		posts = cloneDeep(posts);
 		// console.log(posts);
-		const index = findIndex(posts, (data) => data.id === post.id);
+		const index = findIndex(posts, (data) => data.id === post.id || data.id === post._id);
 
 		if (index > -1) {
 			posts.splice(index, 1, post);

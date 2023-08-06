@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import { ImageUtilsService } from '@services/utils/image.utils.service';
 import { postService } from '@services/api/post.service';
 import { Spinner } from '@components/spinner/Spinner';
+import {UtilsService} from "@services/utils/utils.service";
 
 export const PostAdd = ({ selectedPostImage }) => {
 	const { gifModalIsOpen, feeling } = useSelector((state) => state.modal);
@@ -205,9 +206,9 @@ export const PostAdd = ({ selectedPostImage }) => {
 
 						<div className="modal-box-bg-colors">
 							<ul>
-								{ bgColors && bgColors.map((color, index) => (
+								{ bgColors && bgColors.map((color) => (
 									<li data-testid="bg-colors"
-										key={index}
+										key={UtilsService.generateString(10)}
 										className={`${color === '#ffffff' ? 'whiteColorBorder' : ''}`}
 										style={{ backgroundColor: `${color}` }}
 										onClick={() => {

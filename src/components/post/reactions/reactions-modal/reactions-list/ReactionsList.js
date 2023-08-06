@@ -1,12 +1,13 @@
 import { Avatar } from '@components/avatar/Avatar';
 import { reactionsMap } from '@services/utils/static.data';
 import PropTypes from 'prop-types';
+import {UtilsService} from "@services/utils/utils.service";
 
 export const ReactionsList = ({ postReactions }) => {
 	return (
 		<div className="modal-reactions-container">
-			{ postReactions.map((reaction, index) => (
-				<div className="modal-reactions-container-list" key={index}>
+			{ postReactions.map((reaction) => (
+				<div className="modal-reactions-container-list" key={UtilsService.generateString(10)}>
 					<div className="img">
 						<Avatar
 							name={ reaction?.username }

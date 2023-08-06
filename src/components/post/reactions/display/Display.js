@@ -64,8 +64,8 @@ export const Display = ({ post }) => {
 				<div className="reaction">
 					<div className="likes-block">
 						<div className="likes-block-icons reactions-icon-display">
-							{ reactions.length > 0 && reactions.map((reaction, index) => (
-								<div className="tooltip-container" key={index}>
+							{ reactions.length > 0 && reactions.map((reaction) => (
+								<div className="tooltip-container" key={reaction?.type}>
 									<img data-testid="reaction-img" className="reaction-img" src={`${reactionsMap[reaction?.type]}`} alt="" />
 									<div className="tooltip-container-text tooltip-container-bottom" data-testid="reaction-tooltip">
 										<p className="title">
@@ -77,8 +77,8 @@ export const Display = ({ post }) => {
 
 											{ postReactions.length > 0 && (
 												<>
-													{ postReactions.slice(0, 4).map((postReaction, index) => (
-														<div key={index}>
+													{ postReactions.slice(0, 4).map((postReaction) => (
+														<div key={UtilsService.generateString(10)}>
 															{ postReaction?.type === reaction?.type &&
 																<span key={postReaction?.id}>{postReaction.username}</span>
 															}
@@ -102,8 +102,8 @@ export const Display = ({ post }) => {
 
 									{ postReactions.length > 0 && (
 										<>
-											{ postReactions.slice(0, 4).map((postReaction, index) => (
-												<span key={index}>{postReaction.username}</span>
+											{ postReactions.slice(0, 4).map((postReaction) => (
+												<span key={UtilsService.generateString(10)}>{postReaction.username}</span>
 											))}
 										</>
 									)}
@@ -128,8 +128,8 @@ export const Display = ({ post }) => {
 
 							{ postCommentNames.length > 0 && (
 								<>
-									{ postCommentNames.slice(0, 4).map((names, index) => (
-										<span key={index}>{names}</span>
+									{ postCommentNames.slice(0, 4).map((names) => (
+										<span key={UtilsService.generateString(10)}>{names}</span>
 									))}
 								</>
 							)}

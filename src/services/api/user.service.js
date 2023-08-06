@@ -12,6 +12,10 @@ class UserService {
 	async checkUser() {
 		return await axios.get('/currentuser');
 	}
+
+	async getAllUsers(page) {
+		return await axios.get(`/user/all/${page}`);
+	}
 }
 
 export const userService = new UserService();

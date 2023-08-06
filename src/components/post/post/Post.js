@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Avatar } from '@components/avatar/Avatar';
 import { FaPencilAlt, FaRegTrashAlt } from 'react-icons/fa';
 import { timeAgoUtils } from '@services/utils/timeago.utils';
-import {emptyPostData, feelingsList, privacyList} from '@services/utils/static.data';
+import { emptyPostData, feelingsList, privacyList } from '@services/utils/static.data';
 import { find } from 'lodash';
 import { UtilsService } from '@services/utils/utils.service';
 import { PostCommentSection } from '@components/post/post-comment-section/PostCommentSection';
@@ -12,17 +12,19 @@ import { useLocalStorage } from '@hooks/useLocalStorage';
 import { CommentInput } from '@components/post/comments/comments-input/CommentInput';
 import { CommentsModal } from '@components/post/comments/comments-modal/CommentsModal';
 import { ImageModal } from '@components/image-modal/ImageModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { openModal, toggleDeleteDialog } from '@redux/reducers/modal/modal.reducer';
 import { updatePostItem } from '@redux/reducers/post/post.reducer';
 import { Dialog } from '@components/dialog/Dialog';
-import {postService} from "@services/api/post.service";
+import { postService } from '@services/api/post.service';
+import {ImageUtilsService} from "@services/utils/image.utils.service";
 
 export const Post = ({ post, showIcons }) => {
 	const { id } = useSelector((state) => state.post);
 	const { reactionModalIsOpen, commentModalIsOpen, deleteDialogIsOpen } = useSelector((state) => state.modal);
 	const [ showImageModal, setShowImageModal ] = useState(false);
 	const [ imageUrl, setImageUrl ] = useState('');
+	const [ backgroundImageColor, setBackgroundImageColor ] = useState('');
 	const selectedPostId = useLocalStorage('selectedPostId', 'get');
 	const dispatch = useDispatch();
 
@@ -59,6 +61,27 @@ export const Post = ({ post, showIcons }) => {
 			UtilsService.dispatchNotification(err?.response?.data?.message, 'error', dispatch);
 		}
 	}
+
+	const getBackgroundImageColor = async (post) => {
+		if (!post?.imgId && !post?.gifUrl)
+			return;
+
+		let imageUrl = '';
+
+		if (post?.imgId && !post?.gifUrl && post?.bgColor === '#ffffff') {
+			imageUrl = UtilsService.appImageUrl(post?.imgVersion, post?.imgId);
+		}
+		else if (post?.gifUrl && post?.bgColor === '#ffffff') {
+			imageUrl = post?.gifUrl;
+		}
+
+		const bgColor = await ImageUtilsService.getBackgroundImageColor(imageUrl);
+		setBackgroundImageColor(bgColor);
+	};
+
+	useEffect(() => {
+		getBackgroundImageColor(post);
+	}, [post]);
 
 	// console.log(post);
 
@@ -135,20 +158,20 @@ export const Post = ({ post, showIcons }) => {
 							)}
 
 							{ post?.imgId && !post?.gifUrl && post.bgColor === '#ffffff' && (
-								<div className="image-display-flex" style={{ height: '600px' }} onClick={() => {
+								<div className="image-display-flex" style={{ height: '600px', backgroundColor: `${backgroundImageColor}` }} onClick={() => {
 									setImageUrl(`${UtilsService.appImageUrl(post?.imgVersion, post?.imgId)}`);
 									setShowImageModal(!showImageModal);
 								}}>
-									<img className="post-image" src={`${UtilsService.appImageUrl(post?.imgVersion, post?.imgId)}`} alt=""/>
+									<img style={{ objectFit: 'contain' }} className="post-image" src={`${UtilsService.appImageUrl(post?.imgVersion, post?.imgId)}`} alt=""/>
 								</div>
 							)}
 
 							{ post?.gifUrl && post.bgColor === '#ffffff' && (
-								<div className="image-display-flex" onClick={() => {
+								<div className="image-display-flex" style={{ backgroundColor: `${backgroundImageColor}` }} onClick={() => {
 									setImageUrl(`${post?.gifUrl}`);
 									setShowImageModal(!showImageModal);
 								}}>
-									<img className="post-img" src={`${post?.gifUrl}`} alt=""/>
+									<img style={{ objectFit: 'contain' }} className="post-img" src={`${post?.gifUrl}`} alt=""/>
 								</div>
 							)}
 

@@ -66,9 +66,9 @@ export const ReactionModal = () => {
 					<ul className="modal-reactions-header-tabs-list">
 						<li className={`${activeViewedTab ? 'activeViewAllTab' : 'all'}`} onClick={viewAll}>All</li>
 
-						{ formattedReactions.map((reaction, index) => (
+						{ formattedReactions.map((reaction) => (
 							<li className={`${reaction.type === reactionType ? 'activeTab' : ''}`}
-								key={index}
+								key={UtilsService.generateString(10)}
 								style={{ color: `${reaction?.type === reactionType ? reactionColor : ''}` }}
 								onClick={() => reactionList(reaction?.type)}
 							>

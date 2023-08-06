@@ -1,6 +1,6 @@
 import { addUser, clearUser } from '@redux/reducers/user/user.reducer';
 import { addToNotifications, clearNotifications } from '@redux/reducers/notification/notification.reducer';
-import { some } from 'lodash';
+import { some, findIndex } from 'lodash';
 import millify from 'millify';
 
 export class UtilsService {
@@ -109,6 +109,10 @@ export class UtilsService {
 		return some(userFollowers, (user) => user._id === userId || postCreatorId === userId);
 	}
 
+	static checkIfUserIsOnline(username, onlineUsers) {
+		return some(onlineUsers, (user) => user === username?.toLowerCase());
+	}
+
 	static firstLetterUppercase(word) {
 		if (word === "")
 			return "";
@@ -138,5 +142,14 @@ export class UtilsService {
 			return 0;
 
 		return millify(data);
+	}
+
+	static removeUserFromList(list, userId) {
+		const index = findIndex(list, (user) => user?._id === userId);
+		if (index > -1) {
+			list.splice(index, 1);
+		}
+
+		return list;
 	}
 }

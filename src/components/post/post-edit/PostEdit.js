@@ -150,7 +150,7 @@ export const PostEdit = ({ selectedPostImage }) => {
 	}
 
 	const updateUserPost = async () => {
-		const response = await PostUtilsService.sendUpdatePostRequest(post?.id, postData, setApiResponse, setLoading, dispatch);
+		const response = await PostUtilsService.sendUpdatePostRequest(post?.id ? post?.id : post?._id, postData, setApiResponse, setLoading, dispatch);
 
 		if (response && response?.data?.message) {
 			PostUtilsService.closePostModal(dispatch);
@@ -159,7 +159,7 @@ export const PostEdit = ({ selectedPostImage }) => {
 
 	const updatePostWithImage = async (image) => {
 		const result = await ImageUtilsService.readAsBase64(image);
-		const response = await PostUtilsService.sendUpdatePostWithImageRequest(result, post?.id, postData, setApiResponse, setLoading, dispatch);
+		const response = await PostUtilsService.sendUpdatePostWithImageRequest(result, post?.id ? post?.id : post?._id, postData, setApiResponse, setLoading, dispatch);
 
 		if (response && response?.data?.message) {
 			PostUtilsService.closePostModal(dispatch);
@@ -192,7 +192,7 @@ export const PostEdit = ({ selectedPostImage }) => {
 			new Promise((resolve, reject) => {
 				resolve(createFile(postImage));
 			}).then((result) => {
-				console.log(result);
+				// console.log(result);
 				setSelectedPost(result);
 			});
 		}
@@ -286,9 +286,9 @@ export const PostEdit = ({ selectedPostImage }) => {
 
 						<div className="modal-box-bg-colors">
 							<ul>
-								{ bgColors && bgColors.map((color, index) => (
+								{ bgColors && bgColors.map((color) => (
 									<li data-testid="bg-colors"
-										key={index}
+										key={UtilsService.generateString(10)}
 										className={`${color === '#ffffff' ? 'whiteColorBorder' : ''}`}
 										style={{ backgroundColor: `${color}` }}
 										onClick={() => {
