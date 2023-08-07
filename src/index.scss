@@ -34,6 +34,7 @@
 @import "./components/post/comments/comments-modal/CommentsModal";
 @import "./components/image-modal/ImageModal";
 @import "./components/dialog/Dialog";
+@import "./components/gallery-image/GalleryImage";
 
 @import "./pages/auth/auth-tabs/AuthTab";
 @import "./pages/auth/login/Login";
@@ -45,3 +46,4 @@
 @import "./pages/error/Error";
 @import "./pages/social/people/People";
 @import "./pages/social/followers/Followers";
+@import "./pages/social/photos/Photos";

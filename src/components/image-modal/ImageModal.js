@@ -28,7 +28,7 @@ export const ImageModal = ({ image, onCancel, onClickLeft, onClickRight, showArr
 				{ showArrow && (
 					<div
 						className="image-modal-icon-right"
-						onClick={onClickLeft}
+						onClick={onClickRight}
 						style={{ pointerEvents: `${lastItemRight ? 'none' : 'all'}`, color: `${lastItemRight ? '#bdbdbd' : ''}` }}
 					>
 						<FaArrowRight />

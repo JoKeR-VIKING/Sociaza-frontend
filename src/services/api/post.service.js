@@ -50,6 +50,10 @@ class PostService {
 		return await axios.get(`/post/comment/${postId}`);
 	}
 
+	async getPostWithImages(page) {
+		return axios.get(`/post/images/${page}`);
+	}
+
 	async removeReaction(postId, previousReaction, postReactions) {
 		return await axios.delete(`/reaction/${postId}/${previousReaction}`, {
 			data: {
