@@ -14,6 +14,7 @@ const { Notifications } = lazily(() => import('@pages/social/notifications/Notif
 const { People } = lazily(() => import('@pages/social/people/People'));
 const { Followers } = lazily(() => import('@pages/social/followers/Followers'));
 const { Following } = lazily(() => import('@pages/social/following/Following'));
+const { Photos } = lazily(() => import('@pages/social/photos/Photos'));
 
 export const AppRouter = () => {
 	return useRoutes([
@@ -66,6 +67,11 @@ export const AppRouter = () => {
 				},
 				{
 					path: 'photos',
+					element: (
+						<Suspense>
+							<Photos />
+						</Suspense>
+					)
 				},
 				{
 					path: 'notifications',
