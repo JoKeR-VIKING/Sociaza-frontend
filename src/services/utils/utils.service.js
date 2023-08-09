@@ -152,4 +152,8 @@ export class UtilsService {
 
 		return list;
 	}
+
+	static checkUrl(url, word) {
+		return url.includes(word);
+	}
 }

@@ -8,6 +8,7 @@ import { useEffectOnce } from '@hooks/useEffectOnce';
 import { UtilsService } from '@services/utils/utils.service';
 import { useNavigate, Navigate } from 'react-router-dom';
 import propTypes from 'prop-types';
+import { getConversationList } from '@redux/api/chat';
 
 export const ProtectedRoute = ({ children }) => {
 	const { profile, token } = useSelector((state) => state?.user);
@@ -24,6 +25,7 @@ export const ProtectedRoute = ({ children }) => {
 	const checkUser = useCallback(async () => {
 		try {
 			const response = await userService.checkUser();
+			dispatch(getConversationList());
 			setUser(response?.data?.user);
 			setTokenValid(true);
 

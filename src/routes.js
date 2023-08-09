@@ -15,6 +15,7 @@ const { People } = lazily(() => import('@pages/social/people/People'));
 const { Followers } = lazily(() => import('@pages/social/followers/Followers'));
 const { Following } = lazily(() => import('@pages/social/following/Following'));
 const { Photos } = lazily(() => import('@pages/social/photos/Photos'));
+const { Chat } = lazily(() => import('@pages/social/chat/Chat'));
 
 export const AppRouter = () => {
 	return useRoutes([
@@ -37,7 +38,7 @@ export const AppRouter = () => {
 					path: 'chat/messages',
 					element: (
 						<Suspense>
-
+							<Chat/>
 						</Suspense>
 					)
 				},
@@ -68,8 +69,8 @@ export const AppRouter = () => {
 				{
 					path: 'photos',
 					element: (
-						<Suspense>
-							<Photos />
+						<Suspense fallback={<CardSkeleton />}>
+							<Photos/>
 						</Suspense>
 					)
 				},

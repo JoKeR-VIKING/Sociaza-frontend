@@ -2,7 +2,7 @@ import logo from '@assets/images/logo.svg';
 import { FaCaretUp, FaCaretDown, FaRegBell, FaRegEnvelope } from 'react-icons/fa';
 import { Avatar } from '@components/avatar/Avatar';
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { UtilsService } from '@services/utils/utils.service';
 import { ProfileUtilsService } from '@services/utils/profile.utils.service';
 import { useDetectOutsideClick } from '@hooks/useDetectOutsideClick'
@@ -18,9 +18,14 @@ import { notificationService } from '@services/api/notification.service';
 import { NotificationsUtilsService } from '@services/utils/notifications.utils.service';
 import { NotificationPreview } from '@components/dialog/NotificationPreview';
 import { socketService } from '@services/socket/socket.service';
+import { sumBy } from 'lodash';
+import { ChatUtilsService } from '@services/utils/chat.utils.service';
+import { chatService } from '@services/api/chat.service';
+import { getConversationList } from '@redux/api/chat';
 
 export const Header = () => {
 	const { profile } = useSelector((state) => state.user);
+	const { chatList } = useSelector((state) => state.chat);
 	const [ environment, setEnvironment ] = useState('');
 	const messageRef = useRef(null);
 	const notificationRef = useRef(null);
@@ -38,6 +43,8 @@ export const Header = () => {
 		reaction: '',
 		senderName: ''
 	});
+	const [ messageCount, setMessageCount ] = useState(0);
+	const [ messageNotifications, setMessageNotifications ] = useState([]);
 
 	const deleteStoredUsername = useLocalStorage('username', 'delete');
 	const setLoggedIn = useLocalStorage('keepLoggedIn', 'set');
@@ -45,6 +52,7 @@ export const Header = () => {
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const location = useLocation();
 
 	const backgroundColor = `${environment === 'DEV' ? '#50b5ff' : environment === 'STG' ? '#e9710f' : ''}`;
 
@@ -79,7 +87,27 @@ export const Header = () => {
 		}
 	}
 
-	const openChatPage = () => {};
+	const openChatPage = async (notification) => {
+		try {
+			const params = ChatUtilsService.chatUrlParams(notification, profile);
+			ChatUtilsService.joinRoomEvent(notification, profile);
+			ChatUtilsService.privateChatMessages = [];
+
+			const receiverId = notification?.receiverUsername !== profile?.username ? notification?.receiverId : notification?.senderId;
+			if (notification?.receiverUsername === profile?.username && !notification?.isRead) {
+				await chatService.markMessagesAsRead(profile?._id, receiverId);
+			}
+
+			const userTwoName = notification?.receiverUsername !== profile?.username ? notification?.receiverUsername : notification?.senderUsername;
+			await chatService.addChatUsers({ userOne: profile?.username, userTwo: userTwoName });
+			navigate(`/app/social/chat/messages?${createSearchParams(params)}`);
+			setIsMessageActive(false);
+			dispatch(getConversationList());
+		}
+		catch (err) {
+			UtilsService.dispatchNotification(err?.response?.data?.message, 'error', dispatch);
+		}
+	};
 
 	const onLogout = async () => {
 		try {
@@ -104,11 +132,19 @@ export const Header = () => {
 	useEffect(() => {
 		const env = UtilsService.appEnvironment();
 		setEnvironment(env);
-	}, [environment]);
+
+		const count = sumBy(chatList, (notification) => {
+			return !notification?.isRead && notification?.receiverUsername === profile?.username ? 1 : 0;
+		});
+
+		setMessageCount(count);
+		setMessageNotifications(chatList);
+	}, [environment, chatList, profile]);
 
 	useEffect(() => {
 		NotificationsUtilsService.socketIoNotification(profile, notifications, setNotifications, 'header', setNotificationCount);
-	}, [profile, notifications]);
+		NotificationsUtilsService.socketIoMessageNotification(profile, messageNotifications, setMessageNotifications, setMessageCount, dispatch, location);
+	}, [profile, notifications, dispatch, messageNotifications, location]);
 
 	useEffectOnce(() => {
 		UtilsService.mapSettingsDropdown(setSettings);
@@ -121,7 +157,7 @@ export const Header = () => {
 				<div className={'header-nav-wrapper'} data-testid={'header-wrapper'}>
 					{ isMessageActive && (
 						<div ref={messageRef}>
-							<MessageSidebar profile={profile} messageCount={0} messageNotifications={[]} openChatPage={openChatPage}/>
+							<MessageSidebar profile={profile} messageCount={messageCount} messageNotifications={messageNotifications} openChatPage={openChatPage}/>
 						</div>
 					)}
 
@@ -194,7 +230,7 @@ export const Header = () => {
 								}}>
 									<span className="header-list-name">
 										<FaRegEnvelope className="header-list-icon"/>
-										<span className="bg-danger-dots dots" data-testid="messages-dots"></span>
+										{ messageCount > 0 && <span className="bg-danger-dots dots" data-testid="messages-dots"></span> }
 									</span>
 									&nbsp;
 								</li>

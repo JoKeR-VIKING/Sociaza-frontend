@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { FollowerUtilsService } from '@services/utils/follower.utils.service';
 import { socketService } from '@services/socket/socket.service';
 import { followerService } from '@services/api/follower.service';
+import { ChatUtilsService } from '@services/utils/chat.utils.service';
 
 export const People = () => {
 	const { profile } = useSelector((state) => state.user);
@@ -103,6 +104,7 @@ export const People = () => {
 
 	useEffect(() => {
 		FollowerUtilsService.socketIoFollowUser(users, following, setFollowing, setUsers);
+		ChatUtilsService.usersOnline(setOnlineUsers);
 	}, [users, following]);
 
 	return (
