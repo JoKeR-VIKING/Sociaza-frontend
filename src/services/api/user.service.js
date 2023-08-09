@@ -16,6 +16,14 @@ class UserService {
 	async getAllUsers(page) {
 		return await axios.get(`/user/all/${page}`);
 	}
+
+	async searchUsers(query) {
+		return await axios.get(`/user/profile/search/${query}`);
+	}
+
+	async getUserProfileByUserId(userId) {
+		return await axios.get(`/user/profile/id/${userId}`);
+	}
 }
 
 export const userService = new UserService();

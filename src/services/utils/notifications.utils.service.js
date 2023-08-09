@@ -102,4 +102,43 @@ export class NotificationsUtilsService {
 	static async deleteNotification(messageId) {
 		return await notificationService.markNotificationAsDeleted(messageId);
 	}
+
+	static socketIoMessageNotification(profile, messageNotification, setMessageNotification, setMessageCount, dispatch, location) {
+		socketService?.socket?.on('chat list', (data) => {
+			messageNotification = cloneDeep(messageNotification);
+			if (data?.receiverUsername === profile?.username) {
+				const notifcationData = {
+					senderId: data?.senderId,
+					senderUsername: data?.senderUsername,
+					senderAvatarColor: data?.senderAvatarColor,
+					senderProfilePicture: data?.senderProfilePicture,
+					receiverId: data?.receiverId,
+					receiverUsername: data?.receiverUsername,
+					receiverAvatarColor: data?.receiverAvatarColor,
+					receiverProfilePicture: data?.receiverProfilePicture,
+					messageId: data?._id,
+					conversationId: data?.conversationId,
+					body: data?.body,
+					isRead: data?.isRead
+				};
+
+				const messageIndex = findIndex(messageNotification, (notification) => notification?.conversationId === data?.conversationId);
+				if (messageIndex > -1) {
+					remove(messageNotification, (notification) => notification.conversationId === data.conversationId);
+					messageNotification = [notifcationData, ...messageNotification];
+				}
+				else {
+					messageNotification = [notifcationData, ...messageNotification];
+				}
+
+				const count = sumBy(messageNotification, (notifcation) => !notifcation?.isRead);
+				if (!UtilsService.checkUrl(location.pathname, 'chat')) {
+					UtilsService.dispatchNotification('You have a new message', 'success', dispatch);
+				}
+
+				setMessageCount(count);
+				setMessageNotification(messageNotification);
+			}
+		})
+	}
 }
