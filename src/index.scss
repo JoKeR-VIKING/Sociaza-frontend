@@ -42,6 +42,13 @@
 @import "./components/chat/giphy-container/GiphyContainer";
 @import "./components/chat/image-preview/ImagePreview";
 @import "./components/chat/window/message-display/MessageDisplay";
+@import "./components/background-header/BackgroundHeader";
+@import "./components/image-grid-modal/ImageGridModal";
+@import "./components/timeline/Timeline";
+@import "./components/change-password/ChangePassword";
+@import "./components/notification-settings/NotificationSettings";
+@import "./components/toggle/Toggle";
+@import "./components/page-loader/PageLoader";
 
 @import "./pages/auth/auth-tabs/AuthTab";
 @import "./pages/auth/login/Login";
@@ -55,3 +62,4 @@
 @import "./pages/social/followers/Followers";
 @import "./pages/social/photos/Photos";
 @import "./pages/social/chat/Chat";
+@import "./pages/social/profile/Profile";

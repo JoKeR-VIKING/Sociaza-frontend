@@ -24,8 +24,8 @@ export class ChatUtilsService {
 		const users = {
 			receiverId: user.receiverId,
 			receiverName: user.receiverUsername,
-			senderId: profile._id,
-			senderName: profile.username
+			senderId: profile?._id,
+			senderName: profile?.username
 		};
 
 		socketService?.socket?.emit('join room', users);
@@ -38,7 +38,7 @@ export class ChatUtilsService {
 	static chatUrlParams(user, profile) {
 		const params = { username: '', id: '' };
 
-		if (user.receiverUsername === profile.username) {
+		if (user.receiverUsername === profile?.username) {
 			params.username = user.senderUsername.toLowerCase();
 			params.id = user.senderId;
 		}
@@ -72,7 +72,7 @@ export class ChatUtilsService {
 		}
 		else {
 			dispatch(setSelectedUser({ isLoading: false, user: null }));
-			const sender = find(ChatUtilsService.chatUsers, (user) => user.userOne === profile.username && user.userTwo.toLowerCase() === username);
+			const sender = find(ChatUtilsService.chatUsers, (user) => user.userOne === profile?.username && user.userTwo.toLowerCase() === username);
 
 			if (sender) {
 				chatService.removeChatUsers(sender);

@@ -21,14 +21,14 @@ export const CommentArea = ({ post }) => {
 	const dispatch = useDispatch();
 
 	const selectedUserReaction = useCallback((postReactions) => {
-		const userReaction = find(postReactions, (reaction) => reaction.postId === post.id);
+		const userReaction = find(postReactions, (reaction) => reaction.postId === post?.id ? post?.id : post?._id);
 		const result = userReaction ? UtilsService.firstLetterUppercase(userReaction.type) : '';
 		setSelectedReaction(result);
 	}, [post]);
 
 	const addReactionToPost = async (reaction) => {
 		try {
-			const response = await postService.getSingleReactionByUsername(post?.id, profile?.username);
+			const response = await postService.getSingleReactionByUsername(post?.id ? post?.id : post?._id, profile?.username);
 			post = updatePostReaction(reaction, Object.keys(response.data.reactions).length, response.data.reactions?.type);
 
 			const postReactions = addReaction(
@@ -44,7 +44,7 @@ export const CommentArea = ({ post }) => {
 
 			const reactionData = {
 				userTo: post.userId,
-				postId: post.id,
+				postId: post?.id ? post?.id : post?._id,
 				type: reaction,
 				profilePicture: profile.profilePicture,
 				previousReaction: Object.keys(response.data.reactions).length ? response.data.reactions?.type : '',
@@ -58,7 +58,7 @@ export const CommentArea = ({ post }) => {
 				reactionData.previousReaction = response.data.reactions?.type;
 
 				if (reaction === reactionData.previousReaction) {
-					await postService.removeReaction(post.id, reactionData.previousReaction, post.reactions);
+					await postService.removeReaction(post?.id ? post?.id : post?._id, reactionData.previousReaction, post.reactions);
 				}
 				else {
 					await postService.addReaction(reactionData);
@@ -87,11 +87,11 @@ export const CommentArea = ({ post }) => {
 	}
 
 	const addReaction = (newReaction, hasResponse, previousReaction) => {
-		const postReactions = filter(reactions, (reaction) => reaction?.postId !== post.id);
+		const postReactions = filter(reactions, (reaction) => reaction?.postId !== post?.id ? post?.id : post?._id);
 		const newPostReaction = {
 			avatarColor: profile?.avatarColor,
 			createdAt: `${new Date()}`,
-			postId: post.id,
+			postId: post?.id ? post?.id : post?._id,
 			profilePicture: profile?.profilePicture,
 			username: profile?.username,
 			type: newReaction
@@ -107,7 +107,7 @@ export const CommentArea = ({ post }) => {
 	const sendSocketIoReaction = (post, reaction, hasResponse, previousReaction) => {
 		const socketReactionData = {
 			userTo: post.userId,
-			postId: post.id,
+			postId: post?.id ? post?.id : post?._id,
 			username: profile.username,
 			avatarColor: profile.avatarColor,
 			type: reaction,
@@ -121,7 +121,7 @@ export const CommentArea = ({ post }) => {
 
 	const toggleCommentInput = () => {
 		if (!selectedPostId) {
-			setSelectedPostId(post.id);
+			setSelectedPostId(post?.id ? post?.id : post?._id);
 			dispatch(updatePostItem(post));
 		}
 		else {
@@ -130,12 +130,12 @@ export const CommentArea = ({ post }) => {
 	}
 
 	const removeSelectedPostId = () => {
-		if (selectedPostId === post.id) {
+		if (selectedPostId === post?.id ? post?.id : post?._id) {
 			setSelectedPostId('');
 			dispatch(clearPost());
 		}
 		else {
-			setSelectedPostId(post.id);
+			setSelectedPostId(post?.id ? post?.id : post?._id);
 			dispatch(updatePostItem(post));
 		}
 	}
