@@ -2,6 +2,8 @@ import { AuthTab, ForgotPassword, ResetPassword } from '@pages/auth';
 import { StreamsSkeleton } from '@pages/social/streams/StreamsSkeleton';
 import { NotificationSkeleton } from '@pages/social/notifications/NotificationSkeleton';
 import { CardSkeleton } from '@components/card-element/CardSkeleton';
+import { ChatSkeleton } from '@pages/social/chat/ChatSkeleton';
+import { ProfileSkeleton } from '@pages/social/profile/ProfileSkeleton';
 import { ProtectedRoute } from '@pages/ProtectedRoute';
 import { Error } from '@pages/error/Error';
 import { useRoutes } from 'react-router-dom';
@@ -16,6 +18,7 @@ const { Followers } = lazily(() => import('@pages/social/followers/Followers'));
 const { Following } = lazily(() => import('@pages/social/following/Following'));
 const { Photos } = lazily(() => import('@pages/social/photos/Photos'));
 const { Chat } = lazily(() => import('@pages/social/chat/Chat'));
+const { Profile } = lazily(() => import('@pages/social/profile/Profile'));
 
 export const AppRouter = () => {
 	return useRoutes([
@@ -37,7 +40,7 @@ export const AppRouter = () => {
 				{
 					path: 'chat/messages',
 					element: (
-						<Suspense>
+						<Suspense fallback={<ChatSkeleton />}>
 							<Chat/>
 						</Suspense>
 					)
@@ -84,6 +87,11 @@ export const AppRouter = () => {
 				},
 				{
 					path: 'profile/:username',
+					element: (
+						<Suspense fallback={ <ProfileSkeleton /> }>
+							<Profile/>
+						</Suspense>
+					)
 				},
 			]
 		},

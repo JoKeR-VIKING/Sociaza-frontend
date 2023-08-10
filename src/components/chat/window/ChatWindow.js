@@ -31,9 +31,9 @@ export const ChatWindow = () => {
 			setChatMessages([...ChatUtilsService.privateChatMessages]);
 		}
 		catch (err) {
-			UtilsService.dispatchNotification(err?.response?.data?.message);
+			UtilsService.dispatchNotification(err?.response?.data?.message, 'error', dispatch);
 		}
-	}, []);
+	}, [dispatch]);
 
 	const getUserProfileByUserId = useCallback(async () => {
 		try {
@@ -118,6 +118,7 @@ export const ChatWindow = () => {
 
 		ChatUtilsService.usersOnline(setOnlineUsers);
 		ChatUtilsService.usersOnChatPage();
+		// eslint-disable-next-line
 	}, [searchParams, rendered]);
 
 	useEffect(() => {

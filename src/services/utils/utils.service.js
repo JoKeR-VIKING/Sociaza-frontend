@@ -156,4 +156,10 @@ export class UtilsService {
 	static checkUrl(url, word) {
 		return url.includes(word);
 	}
+
+	static renameFile(element) {
+		const fileName = element.name.split('.').slice(0, -1).join('.');
+		const blob = element.slice(0, element.size, '/image/png');
+		return new File([blob], `${fileName}.png`, { type: 'image/png' });
+	}
 }

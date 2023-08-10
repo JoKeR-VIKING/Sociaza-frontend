@@ -49,7 +49,7 @@ export const Toast = (props) => {
 						className={`toast-notification toast ${position}`}
 						style={{ backgroundColor: toast?.backgroundColor }}
 					>
-						<button className={"cancel-button"} onClick={() => deleteToast(index)}>X</button>
+						<button className={"cancel-button"} onClick={() => deleteToast(UtilsService.generateString(10))}>X</button>
 
 						<div className={`toast-notification-image ${toast?.description?.length <= 73 ? 'toast-icon' : ''}`}>
 							<img src={toast?.icon} alt="Icon"/>

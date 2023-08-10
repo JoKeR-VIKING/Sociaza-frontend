@@ -123,9 +123,9 @@ export class PostUtilsService {
 	}
 
 	static checkPrivacy(post, profile, followingList) {
-		const isPrivate = post?.privacy === 'Private' && post?.userId === profile._id;
-		const isPublic = post?.privacy === 'Public' || post?.userId === profile._id;
-		const isFollower = (post?.privacy === 'Followers' && UtilsService.checkIfUserIsFollowed(followingList, post?.userId, profile?._id)) || post?.userId === profile._id;
+		const isPrivate = post?.privacy === 'Private' && post?.userId === profile?._id;
+		const isPublic = post?.privacy === 'Public' || post?.userId === profile?._id;
+		const isFollower = (post?.privacy === 'Followers' && UtilsService.checkIfUserIsFollowed(followingList, post?.userId, profile?._id)) || post?.userId === profile?._id;
 
 		return isPrivate || isPublic || isFollower;
 	}
