@@ -38,7 +38,7 @@ export class ChatUtilsService {
 	static chatUrlParams(user, profile) {
 		const params = { username: '', id: '' };
 
-		if (user.receiverUsername === profile?.username) {
+		if (user?.receiverUsername === profile?.username) {
 			params.username = user.senderUsername.toLowerCase();
 			params.id = user.senderId;
 		}
