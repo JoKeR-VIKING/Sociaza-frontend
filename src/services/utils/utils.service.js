@@ -101,6 +101,15 @@ export class UtilsService {
 		return `https://res.cloudinary.com/dslkigtvk/image/upload/v${version}/${id}`;
 	}
 
+	static appVideoUrl(version, id) {
+		if (typeof version === 'string' && typeof id === 'string') {
+			version = version.replace(/['"]+/g, '');
+			id = id.replace(/['"]+/g, '');
+		}
+
+		return `https://res.cloudinary.com/dslkigtvk/video/upload/v${version}/${id}`;
+	}
+
 	static checkIfUserIsBlocked(blockedList, userId) {
 		return some(blockedList, (id) => id === userId);
 	}

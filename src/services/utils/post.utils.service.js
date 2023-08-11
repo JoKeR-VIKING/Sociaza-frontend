@@ -25,6 +25,7 @@ export class PostUtilsService {
 	static clearImage(postData, post, inputRef, dispatch, setSelectedPostImage, setPostImage, setPostData) {
 		postData.gifUrl = "";
 		postData.image = "";
+		postData.video = "";
 		setSelectedPostImage(null);
 		setPostImage("");
 
@@ -66,14 +67,13 @@ export class PostUtilsService {
 		UtilsService.dispatchNotification(message, type, dispatch);
 	}
 
-	static async sendPostWithImageRequest(fileResult, postData, imageInputRef, setApiResponse, setLoading, dispatch) {
+	static async sendPostWithFileRequest(type, postData, imageInputRef, setApiResponse, setLoading, dispatch) {
 		try {
-			postData.postImage = fileResult;
 			if (imageInputRef?.current) {
 				imageInputRef.current.textContent = postData.post;
 			}
 
-			const response = await postService.createPostWithImage(postData);
+			const response = type === 'image' ? await postService.createPostWithImage(postData) : await postService.createPostWithVideo(postData);
 			if (response) {
 				setApiResponse('success');
 				setLoading(false);
@@ -100,12 +100,9 @@ export class PostUtilsService {
 		return response;
 	}
 
-	static async sendUpdatePostWithImageRequest(fileResult, postId, postData, setApiResponse, setLoading, dispatch) {
+	static async sendUpdatePostWithFileRequest(type, postId, postData, setApiResponse, setLoading, dispatch) {
 		try {
-			postData.postImage = fileResult;
-			postData.gifUrl = postData.imgId = postData.imgVersion = '';
-
-			const response = await postService.updatePostWithImage(postData, postId);
+			const response = type === 'image' ? await postService.updatePostWithImage(postData, postId) : await postService.updatePostWithVideo(postData, postId);
 			if (response) {
 				PostUtilsService.dispatchNotification(response?.data?.message, 'success', setApiResponse, setLoading, dispatch);
 

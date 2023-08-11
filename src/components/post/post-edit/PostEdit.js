@@ -15,13 +15,14 @@ import { Spinner } from '@components/spinner/Spinner';
 import { find } from 'lodash';
 import { UtilsService } from '@services/utils/utils.service';
 
-export const PostEdit = ({ selectedPostImage }) => {
+export const PostEdit = () => {
 	const { gifModalIsOpen, feeling } = useSelector((state) => state.modal);
 	const { post } = useSelector((state) => state);
 	// console.log(post);
 	// const { profile } = useSelector((state) => state.user);
 
 	const [ loading, setLoading ] = useState(false);
+	const [ hasVideo, setHasVideo ] = useState(false);
 	const [ postImage, setPostImage ] = useState('');
 	const [ allowedNumberOfCharacters ] = useState('0/100');
 	const [ textAreaBackground, setTextAreaBackground ] = useState('#ffffff');
@@ -33,11 +34,16 @@ export const PostEdit = ({ selectedPostImage }) => {
 		gifUrl: '',
 		profilePicture: '',
 		postImage: '',
+		postVideo: '',
 		imgId: '',
-		imgVersion: ''
+		imgVersion: '',
+		videId: '',
+		videoVersion: '',
+		video: ''
 	});
 	const [ disabled, setDisabled ] = useState(true);
 	const [ selectedPost, setSelectedPost ] = useState();
+	const [ selectedPostVid, setSelectedPostVid ] = useState(null);
 	const [ apiResponse, setApiResponse ] = useState();
 	const counterRef = useRef(null);
 	const inputRef = useRef(null);
@@ -68,6 +74,8 @@ export const PostEdit = ({ selectedPostImage }) => {
 	}
 
 	const clearImage = () => {
+		setSelectedPostVid(null);
+		setHasVideo(false);
 		PostUtilsService.clearImage(postData, post?.post, inputRef, dispatch, setSelectedPost, setPostImage, setPostData)
 	}
 
@@ -104,17 +112,28 @@ export const PostEdit = ({ selectedPostImage }) => {
 			});
 		}
 
-		if (post?.gifUrl && !post?.imgId) {
+		if (post?.gifUrl && !post?.imgId && !post?.videoId) {
 			postData.gifUrl = post?.gifUrl;
 			setPostImage(post?.gifUrl);
+			setHasVideo(false);
 			postInputData();
 		}
 
-		if (post?.imgId && !post?.gifUrl) {
+		if (post?.imgId && !post?.gifUrl && !post?.videoId) {
 			postData.imgId = post?.imgId;
 			postData.imgVersion = post?.imgVersion;
 			const imageUrl = UtilsService.appImageUrl(post?.imgVersion, post?.imgId);
 			setPostImage(imageUrl);
+			setHasVideo(false);
+			postInputData();
+		}
+
+		if (post?.videoId && !post?.gifUrl) {
+			postData.videoId = post?.videoId;
+			postData.videoVersion = post?.videoVersion;
+			const videoUrl = UtilsService.appVideoUrl(post?.videoVersion, post?.videoId);
+			setPostImage(videoUrl);
+			setHasVideo(true);
 			postInputData();
 		}
 	}, [post, postData, getFeeling, postInputData]);
@@ -137,10 +156,16 @@ export const PostEdit = ({ selectedPostImage }) => {
 			postData.profilePicture = post?.profilePicture;
 
 			if (selectedPost) {
-				updatePostWithImage(selectedPost);
+				delete postData.postVideo;
+				updatePostWithFile(selectedPost);
+			}
+			else if (selectedPostVid) {
+				delete postData.postImage;
+				updatePostWithFile(selectedPostVid);
 			}
 			else {
 				delete postData.postImage;
+				delete postData.postVideo;
 				updateUserPost();
 			}
 		}
@@ -157,9 +182,16 @@ export const PostEdit = ({ selectedPostImage }) => {
 		}
 	}
 
-	const updatePostWithImage = async (image) => {
+	const updatePostWithFile = async (image) => {
 		const result = await ImageUtilsService.readAsBase64(image);
-		const response = await PostUtilsService.sendUpdatePostWithImageRequest(result, post?.id ? post?.id : post?._id, postData, setApiResponse, setLoading, dispatch);
+		const type = hasVideo ? 'video' : 'image';
+
+		if (type === 'image')
+			postData.postImage = result;
+		else
+			postData.postVideo = result;
+
+		const response = await PostUtilsService.sendUpdatePostWithFileRequest(type, post?.id ? post?.id : post?._id, postData, setApiResponse, setLoading, dispatch);
 
 		if (response && response?.data?.message) {
 			PostUtilsService.closePostModal(dispatch);
@@ -181,13 +213,17 @@ export const PostEdit = ({ selectedPostImage }) => {
 	useEffect(() => {
 		if (post?.gifUrl) {
 			postData.postImage = '';
+			postData.postVideo = '';
 			setPostImage(post?.gifUrl);
+			setSelectedPostVid(null);
 			setSelectedPost(null);
+			setHasVideo(false);
 			PostUtilsService.postInputData(imageInputRef, postData, post?.post, setPostData);
 		}
 		else if (post?.imgId) {
 			setPostImage(UtilsService.appImageUrl(post?.imgVersion, post?.imgId));
 			PostUtilsService.postInputData(imageInputRef, postData, post?.post, setPostData);
+			setHasVideo(false);
 
 			new Promise((resolve, reject) => {
 				resolve(createFile(postImage));
@@ -195,6 +231,11 @@ export const PostEdit = ({ selectedPostImage }) => {
 				// console.log(result);
 				setSelectedPost(result);
 			});
+		}
+		else if (post?.video) {
+			setPostImage(post?.video);
+			setHasVideo(true);
+			PostUtilsService.postInputData(imageInputRef, postData, post?.post, setPostData);
 		}
 
 		editableFields();
@@ -221,7 +262,7 @@ export const PostEdit = ({ selectedPostImage }) => {
 				<div></div>
 
 				{ !gifModalIsOpen && (
-					<div className="modal-box" style={{ height: selectedPostImage || post?.gifUrl || post?.image || postData?.gifUrl || postData?.postImage ? '700px' : 'auto' }}>
+					<div className="modal-box" style={{ height: selectedPost || selectedPostVid || post?.gifUrl || post?.image || postData?.gifUrl || postData?.postImage ? '700px' : 'auto' }}>
 						{ loading && (
 							<div className="modal-box-loading" data-testid="modal-box-loading">
 								<span>Updating...</span>
@@ -275,11 +316,16 @@ export const PostEdit = ({ selectedPostImage }) => {
 								</div>
 
 								<div className='image-display'>
-									<div className='image-delete-btn' data-testid="image-delete-btn" onClick={() => clearImage()}>
+									<div className='image-delete-btn' style={{ marginTop: `${hasVideo ? '-40px' : ''}` ,zIndex: 99999 }} data-testid="image-delete-btn" onClick={() => clearImage()}>
 										<FaTimes />
 									</div>
 
-									<img data-testid="post-img" className="post-image" src={`${postImage}`} alt="" />
+									{ !hasVideo && <img data-testid="post-img" className="post-image" src={`${postImage}`} alt="" /> }
+									{ hasVideo && (
+										<div style={{ marginTop: '-40px' }}>
+											<video width="100%" controls src={`${postImage}`} />
+										</div>
+									)}
 								</div>
 							</div>
 						)}
@@ -305,7 +351,7 @@ export const PostEdit = ({ selectedPostImage }) => {
 							{allowedNumberOfCharacters}
 						</span>
 
-						<ModalBoxSelection setSelectedPostImage={setSelectedPost} />
+						<ModalBoxSelection setSelectedPostImage={setSelectedPost} setSelectedPostVideo={setSelectedPostVid} />
 
 						<div className="modal-box-button" data-testid="post-button">
 							<Button label="Update Post" className="post-button" handleClick={() => updatePost()} disabled={disabled} />
@@ -335,8 +381,4 @@ export const PostEdit = ({ selectedPostImage }) => {
 			</PostWrapper>
 		</>
 	);
-}
-
-PostEdit.propTypes = {
-	setSelectedPostImage: PropTypes.func
 }

@@ -182,6 +182,7 @@ export const emptyPostData = {
 	gifUrl: '',
 	profilePicture: '',
 	image: '',
+	video: '',
 	userId: '',
 	username: '',
 	email: '',
@@ -190,6 +191,8 @@ export const emptyPostData = {
 	reactions: [],
 	imgVersion: '',
 	imgId: '',
+	videoVersion: '',
+	videoId: '',
 	createdAt: ''
 };
 
