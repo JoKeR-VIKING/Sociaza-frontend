@@ -63,10 +63,10 @@ export const Timeline = ({ userProfileData, loading }) => {
 			setPosts(userProfileData?.posts);
 			setUser(userProfileData?.user);
 			setEditableInputs({
-				quote: userProfileData?.user?.quote.slice(1, -1),
-				work: userProfileData?.user?.work.slice(1, -1),
-				school: userProfileData?.user?.school.slice(1, -1),
-				location: userProfileData?.user?.location.slice(1, -1)
+				quote: userProfileData?.user?.quote,
+				work: userProfileData?.user?.work,
+				school: userProfileData?.user?.school,
+				location: userProfileData?.user?.location
 			});
 			setEditableSocialInputs(userProfileData?.user?.social);
 		}
