@@ -35,42 +35,36 @@ export const sideBarItems = [
 	},
 	{
 		index: 2,
-		name: 'Chat',
-		url: '/app/social/chat/messages',
-		iconName: 'FaComments'
-	},
-	{
-		index: 3,
 		name: 'People',
 		url: '/app/social/people',
 		iconName: 'FaUsers'
 	},
 	{
-		index: 4,
+		index: 3,
 		name: 'Following',
 		url: '/app/social/following',
 		iconName: 'FaUserPlus'
 	},
 	{
-		index: 5,
+		index: 4,
 		name: 'Followers',
 		url: '/app/social/followers',
 		iconName: 'FaHeart'
 	},
 	{
-		index: 6,
+		index: 5,
 		name: 'Photos',
 		url: '/app/social/photos',
 		iconName: 'FaImages'
 	},
 	{
-		index: 7,
+		index: 6,
 		name: 'Notifications',
 		url: '/app/social/notifications',
 		iconName: 'FaRegBell'
 	},
 	{
-		index: 8,
+		index: 7,
 		name: 'Profile',
 		url: '/app/social/profile',
 		iconName: 'FaRegUser'
