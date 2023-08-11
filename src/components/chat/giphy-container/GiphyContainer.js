@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { GiphyUtilsService } from '@services/utils/giphy.utils.service';
 import { Input } from '@components/input/Input';
 import { FaSearch } from 'react-icons/fa';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Spinner } from '@components/spinner/Spinner';
 import { UtilsService } from '@services/utils/utils.service';
 

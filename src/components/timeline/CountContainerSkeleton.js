@@ -1,4 +1,3 @@
-import { UtilsService } from '@services/utils/utils.service';
 import Skeleton from 'react-loading-skeleton';
 
 export const CountContainerSkeleton = () => {
