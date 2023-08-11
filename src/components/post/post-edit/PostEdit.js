@@ -9,7 +9,6 @@ import { Button } from '@components/button/Button';
 import { Giphy } from '@components/giphy/Giphy';
 import { PostUtilsService } from '@services/utils/post.utils.service';
 import {addPostFeeling, closeModal, toggleGifModal} from '@redux/reducers/modal/modal.reducer';
-import PropTypes from 'prop-types';
 import { ImageUtilsService } from '@services/utils/image.utils.service';
 import { Spinner } from '@components/spinner/Spinner';
 import { find } from 'lodash';
