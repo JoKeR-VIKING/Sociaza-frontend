@@ -8,6 +8,7 @@ const initialState = {
 	data: null,
 	feelingsIsOpen: false,
 	openFileDialog: false,
+	openVideoDialog: false,
 	gifModalIsOpen: false,
 	reactionModalIsOpen: false,
 	commentModalIsOpen: false,
@@ -32,6 +33,7 @@ const modalSlice = createSlice({
 			state.data = null;
 			state.feelingsIsOpen = false;
 			state.openFileDialog = false;
+			state.openVideoDialog = false;
 			state.gifModalIsOpen = false;
 			state.reactionModalIsOpen = false;
 			state.commentModalIsOpen = false;
@@ -43,6 +45,9 @@ const modalSlice = createSlice({
 		},
 		toggleImageModal: (state, action) => {
 			state.openFileDialog = action.payload;
+		},
+		toggleVideoModal: (state, action) => {
+			state.openVideoDialog = action.payload;
 		},
 		toggleFeelingModal: (state, action) => {
 			state.feelingsIsOpen = action.payload;
@@ -71,6 +76,7 @@ export const {
 	toggleCommentModal,
 	toggleGifModal,
 	toggleImageModal,
+	toggleVideoModal,
 	toggleDeleteDialog,
 	toggleFeelingModal,
 	toggleReactionModal

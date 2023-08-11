@@ -1,14 +1,20 @@
 import { updatePostItem } from '@redux/reducers/post/post.reducer';
 
 export class ImageUtilsService {
-	static validateFile(file) {
-		const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-		return file && validTypes.indexOf(file.type) > -1;
+	static validateFile(file, type) {
+		if (type === 'image') {
+			const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+			return file && validTypes.indexOf(file.type) > -1;
+		}
+		else {
+			const validTypes = ['video/mp4', 'video/ogg', 'video/webm', 'video/x-matroska'];
+			return file && validTypes.indexOf(file.type) > -1;
+		}
 	}
 
-	static checkFileSize(file) {
+	static checkFileSize(file, type) {
 		let fileError = '';
-		const isValid = ImageUtilsService.validateFile(file);
+		const isValid = ImageUtilsService.validateFile(file, type);
 
 		if (!isValid)
 			fileError = `File ${file.name} with type ${file.type} not accepted`;
@@ -18,8 +24,8 @@ export class ImageUtilsService {
 		return fileError;
 	}
 
-	static checkFile(file) {
-		let err = ImageUtilsService.checkFileSize(file);
+	static checkFile(file, type) {
+		let err = ImageUtilsService.checkFileSize(file, type);
 		if (err) {
 			window.alert(err);
 			return true;
@@ -28,25 +34,28 @@ export class ImageUtilsService {
 		return false;
 	}
 
-	static addFileToRedux(event, post, setSelectedPostImage, dispatch) {
+	static addFileToRedux(event, post, setSelectedFile, dispatch, type) {
 		const file = event.target.files[0];
 
-		let err = ImageUtilsService.checkFile(file);
+		let err = ImageUtilsService.checkFile(file, type);
 		if (err)
 			return;
 
-		setSelectedPostImage(file);
+		setSelectedFile(file);
 		dispatch(updatePostItem({
-			image: URL.createObjectURL(file),
+			image: type === 'image' ? URL.createObjectURL(file) : '',
+			video: type === 'video' ? URL.createObjectURL(file) : '',
 			gifUrl: '',
 			imgId: '',
 			imgVersion: '',
+			videoId: '',
+			videoVersion: '',
 			post: post
 		}));
 	}
 
 	static readAsBase64(file) {
-		console.log(file, typeof file);
+		// console.log(file, typeof file);
 
 		const reader = new FileReader();
 		return new Promise((resolve, reject) => {

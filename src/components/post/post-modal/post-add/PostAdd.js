@@ -13,13 +13,14 @@ import PropTypes from 'prop-types';
 import { ImageUtilsService } from '@services/utils/image.utils.service';
 import { postService } from '@services/api/post.service';
 import { Spinner } from '@components/spinner/Spinner';
-import {UtilsService} from "@services/utils/utils.service";
+import { UtilsService } from '@services/utils/utils.service';
 
-export const PostAdd = ({ selectedPostImage }) => {
+export const PostAdd = ({ selectedPostImage, selectedPostVideo }) => {
 	const { gifModalIsOpen, feeling } = useSelector((state) => state.modal);
-	const { gifUrl, image, privacy } = useSelector((state) => state.post);
+	const { gifUrl, image, privacy, video } = useSelector((state) => state.post);
 	const { profile } = useSelector((state) => state.user);
 
+	const [ hasVideo, setHasVideo ] = useState(false);
 	const [ loading, setLoading ] = useState(false);
 	const [ postImage, setPostImage ] = useState('');
 	const [ allowedNumberOfCharacters ] = useState('0/100');
@@ -31,10 +32,12 @@ export const PostAdd = ({ selectedPostImage }) => {
 		feelings: '',
 		gifUrl: '',
 		profilePicture: '',
-		postImage: ''
+		postImage: '',
+		postVideo: ''
 	});
 	const [ disabled, setDisabled ] = useState(true);
 	const [ selectedPost, setSelectedPost ] = useState();
+	const [ selectedPostVid, setSelectedPostVid ] = useState();
 	const [ apiResponse, setApiResponse ] = useState();
 	const counterRef = useRef(null);
 	const inputRef = useRef(null);
@@ -65,6 +68,7 @@ export const PostAdd = ({ selectedPostImage }) => {
 	}
 
 	const clearImage = () => {
+		setSelectedPostVid(null);
 		PostUtilsService.clearImage(postData, '', inputRef, dispatch, setSelectedPost, setPostImage, setPostData)
 	}
 
@@ -81,33 +85,55 @@ export const PostAdd = ({ selectedPostImage }) => {
 			postData.gifUrl = gifUrl;
 			postData.profilePicture = profile?.profilePicture;
 
-			if (selectedPost || selectedPostImage) {
+			if (selectedPost || selectedPostImage || selectedPostVid || selectedPostVideo) {
 				let result = '';
 				if (selectedPost) {
 					result = await ImageUtilsService.readAsBase64(selectedPost);
 				}
-				else {
+				else if (selectedPostImage) {
 					result = await ImageUtilsService.readAsBase64(selectedPostImage);
 				}
+				else if (selectedPostVid) {
+					result = await ImageUtilsService.readAsBase64(selectedPostVid);
+				}
+				else {
+					result = await ImageUtilsService.readAsBase64(selectedPostVideo);
+				}
 
-				const response = await PostUtilsService.sendPostWithImageRequest(result, postData, imageInputRef, setApiResponse, setLoading, setDisabled, dispatch);
+				const type = selectedPostImage || selectedPost ? 'image' : 'video';
+
+				if (type === 'image') {
+					postData.postImage = result;
+					delete postData.postVideo;
+				}
+				else {
+					postData.postVideo = result;
+					delete postData.postImage;
+				}
+
+				const response = await PostUtilsService.sendPostWithFileRequest(type, postData, imageInputRef, setApiResponse, setLoading, setDisabled, dispatch);
 
 				if (response && response?.data?.message) {
+					setHasVideo(false);
 					PostUtilsService.closePostModal(dispatch);
 				}
 			}
 			else {
 				delete postData.postImage;
+				delete postData.postVideo;
 				const response = await postService.createPost(postData);
 
 				if (response) {
 					setApiResponse('success');
 					setLoading(false);
+					setHasVideo(false);
 					PostUtilsService.closePostModal(dispatch);
 				}
 			}
 		}
 		catch (err) {
+			setHasVideo(false);
+			setLoading(false);
 			PostUtilsService.dispatchNotification(err?.response?.data?.message, 'error', setApiResponse, setLoading, setDisabled, dispatch);
 		}
 	}
@@ -123,13 +149,20 @@ export const PostAdd = ({ selectedPostImage }) => {
 	useEffect(() => {
 		if (gifUrl) {
 			setPostImage(gifUrl);
+			setHasVideo(false);
 			PostUtilsService.postInputData(imageInputRef, postData, '', setPostData);
 		}
 		else if (image) {
 			setPostImage(image);
+			setHasVideo(false);
 			PostUtilsService.postInputData(imageInputRef, postData, '', setPostData);
 		}
-	}, [gifUrl, image, postData]);
+		else if (video) {
+			setHasVideo(true);
+			setPostImage(video);
+			PostUtilsService.postInputData(imageInputRef, postData, '', setPostData);
+		}
+	}, [gifUrl, image, postData, video]);
 
 	useEffect(() => {
 		PostUtilsService.positionCursor(`editable`);
@@ -141,7 +174,7 @@ export const PostAdd = ({ selectedPostImage }) => {
 				<div></div>
 
 				{ !gifModalIsOpen && (
-					<div className="modal-box" style={{ height: selectedPostImage || gifUrl || image || postData?.gifUrl || postData?.postImage ? '700px' : 'auto' }}>
+					<div className="modal-box" style={{ height: selectedPost || selectedPostVid || gifUrl || image || postData?.gifUrl || postData?.postImage ? '700px' : 'auto' }}>
 						{ loading && (
 							<div className="modal-box-loading" data-testid="modal-box-loading">
 								<span>Posting...</span>
@@ -195,11 +228,16 @@ export const PostAdd = ({ selectedPostImage }) => {
 								</div>
 
 								<div className='image-display'>
-									<div className='image-delete-btn' data-testid="image-delete-btn" onClick={() => clearImage()}>
+									<div style={{ marginTop: `${hasVideo ? '-40px' : ''}`, zIndex: 99999 }} className='image-delete-btn' data-testid="image-delete-btn" onClick={() => clearImage()}>
 										<FaTimes />
 									</div>
 
-									<img data-testid="post-img" className="post-image" src={`${postImage}`} alt="" />
+									{ !hasVideo && <img data-testid="post-img" className="post-image" src={`${postImage}`} alt="" /> }
+									{ hasVideo && (
+										<div style={{ marginTop: '-40px' }}>
+											<video width="100%" controls src={`${postImage}`} />
+										</div>
+									)}
 								</div>
 							</div>
 						)}
@@ -225,7 +263,7 @@ export const PostAdd = ({ selectedPostImage }) => {
 							{allowedNumberOfCharacters}
 						</span>
 
-						<ModalBoxSelection setSelectedPostImage={setSelectedPost} />
+						<ModalBoxSelection setSelectedPostImage={setSelectedPost} setSelectedPostVideo={setSelectedPostVid} />
 
 						<div className="modal-box-button" data-testid="post-button">
 							<Button label="Create Post" className="post-button" handleClick={() => createPost()} disabled={disabled} />
@@ -258,5 +296,6 @@ export const PostAdd = ({ selectedPostImage }) => {
 }
 
 PostAdd.propTypes = {
-	setSelectedPostImage: PropTypes.func
+	selectedPostImage: PropTypes.any,
+	selectedPostVide: PropTypes.any
 }

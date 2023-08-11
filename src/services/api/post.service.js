@@ -13,6 +13,10 @@ class PostService {
 		return await axios.post('/post/image-post', body);
 	}
 
+	async createPostWithVideo(body) {
+		return await axios.post('/post/video-post', body);
+	}
+
 	async updatePost(body, postId) {
 		return await axios.put(`/post/${postId}`, body);
 	}
@@ -23,6 +27,10 @@ class PostService {
 
 	async updatePostWithImage(body, postId) {
 		return await axios.put(`/post/image/${postId}`, body);
+	}
+
+	async updatePostWithVideo(body, postId) {
+		return await axios.put(`/post/video/${postId}`, body);
 	}
 
 	async getReactionsByUsername(username) {

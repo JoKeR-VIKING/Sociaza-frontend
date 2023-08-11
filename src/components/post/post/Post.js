@@ -166,6 +166,12 @@ export const Post = ({ post, showIcons }) => {
 								</div>
 							)}
 
+							{ post?.videoId && !post?.gifUrl && post.bgColor === '#ffffff' && (
+								<div className="image-display-flex" style={{ height: '400px', backgroundColor: '#000000' }}>
+									<video autoPlay={true} muted={true} width="100%" height="400px" controls src={UtilsService.appVideoUrl(post?.videoVersion, post?.videoId)} />
+								</div>
+							)}
+
 							{ post?.gifUrl && post.bgColor === '#ffffff' && (
 								<div className="image-display-flex" style={{ backgroundColor: `${backgroundImageColor}` }} onClick={() => {
 									setImageUrl(`${post?.gifUrl}`);
