@@ -1,4 +1,4 @@
-import { HashRouter as BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { AppRouter } from '@root/routes';
 import { Toast } from '@components/toast/Toast';
 import { useEffect } from 'react';
