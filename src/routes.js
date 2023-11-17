@@ -54,7 +54,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					exact path: 'following',
+					path: 'following',
 					element: (
 						<Suspense key={3} fallback={<CardSkeleton />}>
 							<Following/>
