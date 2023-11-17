@@ -22,15 +22,15 @@ const { Profile } = lazily(() => import('@pages/social/profile/Profile'));
 
 export const AppRouter = () => {
 	return useRoutes([
-		{ exact path: '/', element: <AuthTab/> },
-		{ exact path: '/forgot-password', element: <ForgotPassword/> },
-		{ exact path: '/reset-password', element: <ResetPassword/> },
+		{ path: '/', element: <AuthTab/> },
+		{ path: '/forgot-password', element: <ForgotPassword/> },
+		{ path: '/reset-password', element: <ResetPassword/> },
 		{
-			exact path: '/app/social',
+			path: '/app/social',
 			element: <ProtectedRoute><Social/></ProtectedRoute>,
 			children: [
 				{
-					exact path: 'streams',
+					path: 'streams',
 					element: (
 						<Suspense fallback={ <StreamsSkeleton /> }>
 							<Streams/>
@@ -38,7 +38,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					exact path: 'chat/messages',
+					path: 'chat/messages',
 					element: (
 						<Suspense fallback={<ChatSkeleton />}>
 							<Chat/>
@@ -46,7 +46,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					exact path: 'people',
+					path: 'people',
 					element: (
 						<Suspense fallback={<CardSkeleton />}>
 							<People/>
@@ -62,7 +62,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					exact path: 'followers',
+					path: 'followers',
 					element: (
 						<Suspense fallback={<CardSkeleton />}>
 							<Followers/>
@@ -70,7 +70,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					exact path: 'photos',
+					path: 'photos',
 					element: (
 						<Suspense fallback={<CardSkeleton />}>
 							<Photos/>
@@ -86,7 +86,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					exact path: 'profile/:username',
+					path: 'profile/:username',
 					element: (
 						<Suspense fallback={ <ProfileSkeleton /> }>
 							<Profile/>
@@ -95,6 +95,6 @@ export const AppRouter = () => {
 				},
 			]
 		},
-		{ exact path: '*', element: <Error/> }
+		{ path: '*', element: <Error/> }
 	]);
 }
