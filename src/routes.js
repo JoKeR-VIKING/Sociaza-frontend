@@ -32,7 +32,7 @@ export const AppRouter = () => {
 				{
 					path: 'streams',
 					element: (
-						<Suspense fallback={ <StreamsSkeleton /> }>
+						<Suspense key={0} fallback={ <StreamsSkeleton /> }>
 							<Streams/>
 						</Suspense>
 					)
@@ -40,7 +40,7 @@ export const AppRouter = () => {
 				{
 					path: 'chat/messages',
 					element: (
-						<Suspense fallback={<ChatSkeleton />}>
+						<Suspense key={1} fallback={<ChatSkeleton />}>
 							<Chat/>
 						</Suspense>
 					)
@@ -48,7 +48,7 @@ export const AppRouter = () => {
 				{
 					path: 'people',
 					element: (
-						<Suspense fallback={<CardSkeleton />}>
+						<Suspense key={2} fallback={<CardSkeleton />}>
 							<People/>
 						</Suspense>
 					)
@@ -56,7 +56,7 @@ export const AppRouter = () => {
 				{
 					exact path: 'following',
 					element: (
-						<Suspense fallback={<CardSkeleton />}>
+						<Suspense key={3} fallback={<CardSkeleton />}>
 							<Following/>
 						</Suspense>
 					)
@@ -64,7 +64,7 @@ export const AppRouter = () => {
 				{
 					path: 'followers',
 					element: (
-						<Suspense fallback={<CardSkeleton />}>
+						<Suspense key={4} fallback={<CardSkeleton />}>
 							<Followers/>
 						</Suspense>
 					)
@@ -72,15 +72,15 @@ export const AppRouter = () => {
 				{
 					path: 'photos',
 					element: (
-						<Suspense fallback={<CardSkeleton />}>
+						<Suspense key={5} fallback={<CardSkeleton />}>
 							<Photos/>
 						</Suspense>
 					)
 				},
 				{
-					exact path: 'notifications',
+					path: 'notifications',
 					element: (
-						<Suspense fallback={ <NotificationSkeleton /> }>
+						<Suspense key={6} fallback={ <NotificationSkeleton /> }>
 							<Notifications/>
 						</Suspense>
 					)
@@ -88,7 +88,7 @@ export const AppRouter = () => {
 				{
 					path: 'profile/:username',
 					element: (
-						<Suspense fallback={ <ProfileSkeleton /> }>
+						<Suspense key={7} fallback={ <ProfileSkeleton /> }>
 							<Profile/>
 						</Suspense>
 					)
