@@ -22,15 +22,15 @@ const { Profile } = lazily(() => import('@pages/social/profile/Profile'));
 
 export const AppRouter = () => {
 	return useRoutes([
-		{ path: '/', element: <AuthTab/> },
-		{ path: '/forgot-password', element: <ForgotPassword/> },
-		{ path: '/reset-password', element: <ResetPassword/> },
+		{ exact path: '/', element: <AuthTab/> },
+		{ exact path: '/forgot-password', element: <ForgotPassword/> },
+		{ exact path: '/reset-password', element: <ResetPassword/> },
 		{
-			path: '/app/social',
+			exact path: '/app/social',
 			element: <ProtectedRoute><Social/></ProtectedRoute>,
 			children: [
 				{
-					path: 'streams',
+					exact path: 'streams',
 					element: (
 						<Suspense fallback={ <StreamsSkeleton /> }>
 							<Streams/>
@@ -38,7 +38,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					path: 'chat/messages',
+					exact path: 'chat/messages',
 					element: (
 						<Suspense fallback={<ChatSkeleton />}>
 							<Chat/>
@@ -46,7 +46,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					path: 'people',
+					exact path: 'people',
 					element: (
 						<Suspense fallback={<CardSkeleton />}>
 							<People/>
@@ -54,7 +54,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					path: 'following',
+					exact path: 'following',
 					element: (
 						<Suspense fallback={<CardSkeleton />}>
 							<Following/>
@@ -62,7 +62,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					path: 'followers',
+					exact path: 'followers',
 					element: (
 						<Suspense fallback={<CardSkeleton />}>
 							<Followers/>
@@ -70,7 +70,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					path: 'photos',
+					exact path: 'photos',
 					element: (
 						<Suspense fallback={<CardSkeleton />}>
 							<Photos/>
@@ -78,7 +78,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					path: 'notifications',
+					exact path: 'notifications',
 					element: (
 						<Suspense fallback={ <NotificationSkeleton /> }>
 							<Notifications/>
@@ -86,7 +86,7 @@ export const AppRouter = () => {
 					)
 				},
 				{
-					path: 'profile/:username',
+					exact path: 'profile/:username',
 					element: (
 						<Suspense fallback={ <ProfileSkeleton /> }>
 							<Profile/>
@@ -95,6 +95,6 @@ export const AppRouter = () => {
 				},
 			]
 		},
-		{ path: '*', element: <Error/> }
+		{ exact path: '*', element: <Error/> }
 	]);
 }
