@@ -26,7 +26,7 @@ export const AppRouter = () => {
 		{ path: '/forgot-password', element: <ForgotPassword/> },
 		{ path: '/reset-password', element: <ResetPassword/> },
 		{
-			path: '/app/social',
+			path: '/app/social/*',
 			element: <ProtectedRoute><Social/></ProtectedRoute>,
 			children: [
 				{
