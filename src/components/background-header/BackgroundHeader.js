@@ -38,7 +38,7 @@ export const BackgroundHeader = ({ user, loading, url, onClick, tab, hasImage, t
 		setIsActive(!isActive);
 	};
 
-	// console.log(galleryImages);
+	console.log(user);
 
 	const BackgroundSelectDropdown = () => {
 		return (
