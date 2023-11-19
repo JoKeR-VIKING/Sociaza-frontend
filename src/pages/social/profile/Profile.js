@@ -125,7 +125,7 @@ export const Profile = () => {
 
 		try {
 			const response = await userService.getUserProfileByUsername(username, searchParams.get('id'), searchParams.get('uId'));
-			console.log(searchParams.get('id'));
+			console.log(response, response?.data?.user);
 			setUser(response?.data?.user);
 			setUserProfileData(response?.data);
 			if (response?.data?.user?.bgImageVersion)
